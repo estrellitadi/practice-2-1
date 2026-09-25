@@ -9,7 +9,7 @@
 //   - year (number, опционально)
 //   - rating (number от 0 до 5, опционально)
 export interface Book {
-    id:string,
+    readonly id: string;
     title : string;
     authors: string[];
     year?:number; 
@@ -35,6 +35,7 @@ export function formatBook(book: Book): string {
   const authorsStr = book.authors.join(", ");
   //возврат значения 
   return `${book.title}${yearStr} — ${authorsStr}`;
+
 }
 // TODO 5: Реализуйте функцию calculateAverageYear(books: Book[]): number
 // Вернуть средний год издания. Если книг нет или у них нет года — вернуть 0.

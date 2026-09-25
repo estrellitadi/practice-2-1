@@ -2,7 +2,7 @@
 // Управление данными без мутации исходных объектов (иммутабельность)
 
 // TODO 0: Импортируйте типы Book и Catalog из файла task1-types.ts
-
+import type { Book, Catalog } from './task1-types';
 
 // TODO 1: Добавьте книгу в каталог
 // Параметры:
@@ -12,9 +12,8 @@
 // Подсказка: используйте оператор расширения (spread) `...`, чтобы создать новый объект, 
 // а не изменять существующий. Ключом должно быть свойство book.id.
 export function addBook(catalog: Catalog, book: Book): Catalog {
-
-  return  {
-   // TODO: напишите код здесь
+  return  {...catalog,
+    [book.id]: book // TODO: напишите код здесь
   };
 }
 
@@ -26,7 +25,8 @@ export function addBook(catalog: Catalog, book: Book): Catalog {
 //  Подсказка: используйте деструктуризацию объекта с вычисляемым ключом и rest-параметром:
 
 export function removeBook(catalog: Catalog, id: string): Catalog {
-  // TODO: напишите код здесь
+  const { [id]: _removedBook, ...restCatalog } = catalog;
+  return restCatalog;
 }
 
 // TODO 3: Найдите книгу в каталоге по id
@@ -35,5 +35,5 @@ export function removeBook(catalog: Catalog, id: string): Catalog {
 //   - id (string): идентификатор искомой книги
 // Возвращает: объект Book, если книга найдена, или undefined, если её нет
 export function getBook(catalog: Catalog, id: string): Book | undefined {
- // TODO: напишите код здесь
+  return catalog[id];
 }

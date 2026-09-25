@@ -9,8 +9,15 @@ import { Book, BookFilter } from "./task1-types";
 // Возвращает: функцию типа BookFilter, которая возвращает true, если автор есть в списке book.authors
 // Подсказка: используйте метод массива .some() и приведите строки к нижнему регистру для нечувствительного поиска.
 export const filterByAuthor = (authorName: string): BookFilter => {
-  // TODO: напишите код здесь
-  return () => false;
+  return (book: Book) => {
+    const lowerAuthorName = authorName.toLowerCase();
+    for (const author of book.authors) {
+      if (author.toLowerCase().includes(lowerAuthorName)) {
+        return true;
+      }
+    }
+    return false;
+  };
 };
 
 // TODO 2: Создайте фильтр по минимальному году издания
@@ -19,8 +26,12 @@ export const filterByAuthor = (authorName: string): BookFilter => {
 // Возвращает: функцию типа BookFilter, которая возвращает true, если book.year >= year
 // Подсказка: не забудьте проверить, что book.year !== undefined, иначе будет ошибка.
 export const filterByMinYear = (year: number): BookFilter => {
-  // TODO: напишите код здесь
-  return () => false;
+  return (book: Book) => {
+    if (typeof book.year !== 'number') {
+      return false;
+    }
+    return book.year >= year;
+  };
 };
 
 // TODO 3: Создайте фильтр по минимальному рейтингу
@@ -28,8 +39,12 @@ export const filterByMinYear = (year: number): BookFilter => {
 //   - rating (number): минимальный рейтинг
 // Возвращает: функцию типа BookFilter, которая возвращает true, если book.rating >= rating
 export const filterByMinRating = (rating: number): BookFilter => {
-  // TODO: напишите код здесь
-  return () => false;
+  return (book: Book) => {
+    if (typeof book.rating !== 'number') {
+      return false;
+    }
+    return book.rating >= rating;
+  };
 };
 
 // TODO 4: Примените массив фильтров к массиву книг
@@ -39,6 +54,12 @@ export const filterByMinRating = (rating: number): BookFilter => {
 // Возвращает: новый массив Book[], содержащий только те книги, которые проходят ВСЕ фильтры
 // Подсказка: используйте метод массива .filter() в сочетании с .every().
 export const applyFilters = (books: Book[], filters: BookFilter[]): Book[] => {
-  // TODO: напишите код здесь
-  return [];
+  return books.filter((book) => {
+    for (const filter of filters) {
+      if (!filter(book)) {
+        return false;
+      }
+    }
+    return true;
+  });
 };
