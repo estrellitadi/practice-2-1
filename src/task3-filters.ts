@@ -10,13 +10,10 @@ import { Book, BookFilter } from "./task1-types";
 // Подсказка: используйте метод массива .some() и приведите строки к нижнему регистру для нечувствительного поиска.
 export const filterByAuthor = (authorName: string): BookFilter => {
   return (book: Book) => {
-    const lowerAuthorName = authorName.toLowerCase();
-    for (const author of book.authors) {
-      if (author.toLowerCase().includes(lowerAuthorName)) {
-        return true;
-      }
-    }
-    return false;
+    const lowerAuthor = authorName.toLowerCase();
+    return book.authors.some((author) =>
+      author.toLowerCase().includes(lowerAuthor)
+    );
   };
 };
 
@@ -27,7 +24,7 @@ export const filterByAuthor = (authorName: string): BookFilter => {
 // Подсказка: не забудьте проверить, что book.year !== undefined, иначе будет ошибка.
 export const filterByMinYear = (year: number): BookFilter => {
   return (book: Book) => {
-    if (typeof book.year !== 'number') {
+    if (typeof book.year !== "number") {
       return false;
     }
     return book.year >= year;
@@ -40,7 +37,7 @@ export const filterByMinYear = (year: number): BookFilter => {
 // Возвращает: функцию типа BookFilter, которая возвращает true, если book.rating >= rating
 export const filterByMinRating = (rating: number): BookFilter => {
   return (book: Book) => {
-    if (typeof book.rating !== 'number') {
+    if (typeof book.rating !== "number") {
       return false;
     }
     return book.rating >= rating;
@@ -54,12 +51,8 @@ export const filterByMinRating = (rating: number): BookFilter => {
 // Возвращает: новый массив Book[], содержащий только те книги, которые проходят ВСЕ фильтры
 // Подсказка: используйте метод массива .filter() в сочетании с .every().
 export const applyFilters = (books: Book[], filters: BookFilter[]): Book[] => {
-  return books.filter((book) => {
-    for (const filter of filters) {
-      if (!filter(book)) {
-        return false;
-      }
-    }
-    return true;
-  });
+  if (filters.length === 0) {
+    return books;
+  }
+  return books.filter((book) => filters.every((filter) => filter(book)));
 };
